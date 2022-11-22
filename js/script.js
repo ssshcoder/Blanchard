@@ -50,7 +50,7 @@ const element = document.querySelector('.js-choice');
   slidesPerGroup: 1,
 
   pagination: {
-    el: '.swiper-pagination',
+    el: '.swiper-pagination-1',
     type: 'fraction',
   },
 
@@ -80,14 +80,14 @@ const element = document.querySelector('.js-choice');
       slidesPerGroup: 2,
     },
     930: {
-      slidesPerView: 3,
-      spaceBetween: 34,
-      slidesPerGroup: 3,
+      // slidesPerView: 3,
+      // spaceBetween: 34,
+      // slidesPerGroup: 3,
     },
-    640: {
-      slidesPerView: 2,
-      spaceBetween: 34,
-      slidesPerGroup: 2,
+    767: {
+      slidesPerView: 1,
+      spaceBetween: 38,
+      slidesPerGroup: 1,
     },
   }
 
@@ -119,6 +119,18 @@ const swiper2 = new Swiper('.swiper-2', {
 
   breakpoints: {
     // when window width is >= 1500px
+    1700: {
+      slidesPerView: 3,
+      spaceBetween: 50,
+      slidesPerGroup: 1,
+
+    },
+    1500: {
+      slidesPerView: 4,
+      spaceBetween: 50,
+      slidesPerGroup: 1,
+
+    },
     1023: {
       slidesPerView: 3,
       spaceBetween: 50,
@@ -128,7 +140,7 @@ const swiper2 = new Swiper('.swiper-2', {
     // when window width is >= 480px
     600: {
       spaceBetween: 27,
-      slidesPerGroup: 2,
+      slidesPerGroup: 1,
       slidesPerView: 2,
     },
     220: {
@@ -234,6 +246,7 @@ validation
     {
       rule: 'maxLength',
       value: 30,
+      errorMessage: 'Максимальная длинна 30 символов'
     },
     {
       rule: 'required',
@@ -243,7 +256,7 @@ validation
   .addField('#tel', [
     {
       rule: 'required',
-      errorMessage: 'Email is required',
+      errorMessage: 'Заполните телефон',
     },
     {
       rule: 'minLength',
@@ -251,6 +264,13 @@ validation
       errorMessage: 'Номер должен содержать 11 символов',
     },
   ]);
+
+// INPUTMASK
+const selector = document.querySelector(".contacts-form__tel ");
+
+let im = new Inputmask("+7(999)999-99-99");
+im.mask(selector);
+
 
 // выпадающие окна меню
 // let dropdownItems = document.querySelectorAll('.dropdown');
@@ -365,19 +385,39 @@ tooltip.forEach (function (el){
 
 // Кнопка поиска в хедере
 let searchBtn = document.querySelector('.header-search__button')
+let searchBtn860 = document.querySelector('.header__search-btn-860')
+let closeBtn = document.querySelector('.header-search__close-btn')
 let searchInput = document.querySelector('.header-search__input')
 let searchForm = document.querySelector('.header-search')
 let pageWidth = document.documentElement.scrollWidth
 
-searchBtn.addEventListener('click', function(){
-  searchInput.classList.toggle('header-search__input--active')
-  // console.log(pageWidth)
-  if (pageWidth <= 650)
-    searchForm.classList.toggle('mobile--active')
-  else
-    console.log('ширина экрана больше 630px')
-})
+function openSearch() {
 
+  searchInput.classList.add('header-search__input--active')
+  searchForm.classList.add('header-form--active')
+  closeBtn.classList.add('close-btn--active')
+
+  // console.log(pageWidth)
+  if (pageWidth <= 650) {
+    searchForm.classList.add('mobile--active')
+    searchBtn860.classList.add('hide-btn')
+  }
+  else console.log('ширина экрана больше 630px')
+
+  closeBtn.addEventListener('click', closeSearch)
+
+}
+
+function closeSearch() {
+  searchInput.classList.remove('header-search__input--active')
+  searchForm.classList.remove('header-form--active')
+  closeBtn.classList.remove('close-btn--active')
+  searchForm.classList.remove('mobile--active')
+  searchBtn860.classList.remove('hide-btn')
+}
+
+searchBtn.addEventListener('click', openSearch)
+searchBtn860.addEventListener('click', openSearch)
 
 // Кнопка бургер
 let burgerBtn = document.querySelector('.burger')
@@ -386,4 +426,29 @@ let burgerMenu = document.querySelector('.burger-nav')
 burgerBtn.addEventListener('click', function(){
   burgerBtn.classList.toggle('burger--active')
   burgerMenu.classList.toggle('burger-nav--active')
+  document.body.classList.toggle('scroll-forbidden')
+})
+
+// аккордион логика с бордерами (чтобы не делать "двойной" бордер)
+
+const hs = document.querySelectorAll('.accordion__title') // заголовки аккордиона
+
+hs.forEach((h) => {
+  h.addEventListener('mouseover', () => {
+    if(!h.classList.contains('ui-accordion-header-active')) {
+      const next = h.nextElementSibling.nextElementSibling
+      h.classList.add('accordion__title-hover')
+      if (next) {
+        next.classList.add('accordion__title-borderTop')
+      }
+    }
+  })
+
+  h.addEventListener('mouseout', () => {
+    const next = h.nextElementSibling.nextElementSibling
+    h.classList.remove('accordion__title-hover')
+    if (next) {
+      next.classList.remove('accordion__title-borderTop')
+    }
+  })
 })
