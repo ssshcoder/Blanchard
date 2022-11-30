@@ -1,7 +1,3 @@
-
-
-
-
 // Скролл
 new SimpleBar(document.getElementById('scroll-1'), {
   scrollbarMaxSize: 28,
@@ -22,13 +18,8 @@ new SimpleBar(document.getElementById('scroll-4'), {
 new SimpleBar(document.getElementById('scroll-5'), {
   scrollbarMaxSize: 28,
 });
-// Array.prototype.forEach.call(
-//   document.querySelectorAll('.scroll'),
-//   el => new SimpleBar()
-// );
 
-
-// Селект
+// Кастомный селект
 const element = document.querySelector('.js-choice');
   const choices = new Choices(element, {
     searchEnabled: false,
@@ -140,7 +131,7 @@ const swiper2 = new Swiper('.swiper-2', {
     // when window width is >= 480px
     600: {
       spaceBetween: 27,
-      slidesPerGroup: 1,
+      slidesPerGroup: 2,
       slidesPerView: 2,
     },
     220: {
@@ -383,6 +374,7 @@ tooltip.forEach (function (el){
   })
 })
 
+
 // Кнопка поиска в хедере
 let searchBtn = document.querySelector('.header-search__button')
 let searchBtn860 = document.querySelector('.header__search-btn-860')
@@ -419,18 +411,34 @@ function closeSearch() {
 searchBtn.addEventListener('click', openSearch)
 searchBtn860.addEventListener('click', openSearch)
 
+
 // Кнопка бургер
 let burgerBtn = document.querySelector('.burger')
 let burgerMenu = document.querySelector('.burger-nav')
+const burgerItems = document.querySelectorAll('.burger-nav__link')
+
+function burgerItemClick() {
+  document.body.classList.remove('scroll-forbidden')
+  burgerBtn.classList.remove('burger--active')
+  burgerMenu.classList.remove('burger-nav--active')
+
+  for (const item of burgerItems) {
+    item.removeEventListener('click', burgerItemClick)
+  }
+}
 
 burgerBtn.addEventListener('click', function(){
   burgerBtn.classList.toggle('burger--active')
   burgerMenu.classList.toggle('burger-nav--active')
   document.body.classList.toggle('scroll-forbidden')
+
+  for (const item of burgerItems) {
+    item.addEventListener('click', burgerItemClick)
+  }
+
 })
 
 // аккордион логика с бордерами (чтобы не делать "двойной" бордер)
-
 const hs = document.querySelectorAll('.accordion__title') // заголовки аккордиона
 
 hs.forEach((h) => {
@@ -452,3 +460,27 @@ hs.forEach((h) => {
     }
   })
 })
+
+
+// Плавный скролл
+
+const links = document.querySelectorAll('.scroll-link')
+
+console.log(links)
+
+function scrollTo(el) {
+    window.scroll({
+        left:0,
+        top:el.offsetTop,
+        behavior:'smooth'
+    })
+}
+
+for (const link of links) {
+  link.addEventListener('click', (e) => {
+    e.preventDefault()
+    let href = link.getAttribute('href')
+    let target = document.querySelector(href)
+    scrollTo(target)
+    })
+}
