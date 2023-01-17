@@ -18,8 +18,12 @@ new SimpleBar(document.getElementById('scroll-4'), {
 new SimpleBar(document.getElementById('scroll-5'), {
   scrollbarMaxSize: 28,
 });
+// Array.prototype.forEach.call(
+//   document.querySelectorAll('.scroll'),
+//   el => new SimpleBar()
+// );
 
-// Кастомный селект
+// Селект
 const element = document.querySelector('.js-choice');
   const choices = new Choices(element, {
     searchEnabled: false,
@@ -41,7 +45,7 @@ const element = document.querySelector('.js-choice');
   slidesPerGroup: 1,
 
   pagination: {
-    el: '.swiper-pagination-1',
+    el: '.swiper-pagination',
     type: 'fraction',
   },
 
@@ -71,14 +75,14 @@ const element = document.querySelector('.js-choice');
       slidesPerGroup: 2,
     },
     930: {
-      // slidesPerView: 3,
-      // spaceBetween: 34,
-      // slidesPerGroup: 3,
+      slidesPerView: 3,
+      spaceBetween: 34,
+      slidesPerGroup: 3,
     },
-    767: {
-      slidesPerView: 1,
-      spaceBetween: 38,
-      slidesPerGroup: 1,
+    640: {
+      slidesPerView: 2,
+      spaceBetween: 34,
+      slidesPerGroup: 2,
     },
   }
 
@@ -90,7 +94,7 @@ const swiper2 = new Swiper('.swiper-2', {
   direction: 'horizontal',
   slidesPerView: 3,
   loop: false,
-  speed: 300   ,
+  speed: 300,
   spaceBetween: 50,
   watchSlidesProgress: true,
   hashNavigation: true,
@@ -110,18 +114,6 @@ const swiper2 = new Swiper('.swiper-2', {
 
   breakpoints: {
     // when window width is >= 1500px
-    1700: {
-      slidesPerView: 3,
-      spaceBetween: 50,
-      slidesPerGroup: 1,
-
-    },
-    1500: {
-      slidesPerView: 4,
-      spaceBetween: 50,
-      slidesPerGroup: 1,
-
-    },
     1023: {
       slidesPerView: 3,
       spaceBetween: 50,
@@ -149,7 +141,7 @@ const swiper3 = new Swiper('.swiper-3', {
   direction: 'horizontal',
   slidesPerView: 3,
   loop: false,
-  speed: 600   ,
+  speed: 600 ,
   spaceBetween: 50,
   watchSlidesProgress: true,
   hashNavigation: true,
@@ -237,7 +229,6 @@ validation
     {
       rule: 'maxLength',
       value: 30,
-      errorMessage: 'Максимальная длинна 30 символов'
     },
     {
       rule: 'required',
@@ -247,7 +238,7 @@ validation
   .addField('#tel', [
     {
       rule: 'required',
-      errorMessage: 'Заполните телефон',
+      errorMessage: 'Email is required',
     },
     {
       rule: 'minLength',
@@ -255,37 +246,6 @@ validation
       errorMessage: 'Номер должен содержать 11 символов',
     },
   ]);
-
-// INPUTMASK
-const selector = document.querySelector(".contacts-form__tel ");
-
-let im = new Inputmask("+7(999)999-99-99");
-im.mask(selector);
-
-
-// выпадающие окна меню
-// let dropdownItems = document.querySelectorAll('.dropdown');
-// let menuItems = document.querySelectorAll('.hero__menu-item')
-
-// menuItems.forEach(function(el){
-//   el.addEventListener('click', function(e){
-//     const path = e.currentTarget.dataset.path
-
-//     console.log(path)
-
-//     menuItems.forEach(function(menuItem){
-//       menuItem.classList.remove('menu-is-active')
-//     })
-//     el.classList.add('menu-is-active')
-
-//     dropdownItems.forEach(function(dropdownItem){
-//       dropdownItem.classList.remove('dropdown--active')
-//     })
-//     document.querySelector(`[data-target="${path}"]`).classList.add('dropdown--active')
-
-//   })
-// })
-
 
 const params = {
   btnClassName: "js-header-dropdown-btn",
@@ -374,113 +334,26 @@ tooltip.forEach (function (el){
   })
 })
 
-
 // Кнопка поиска в хедере
 let searchBtn = document.querySelector('.header-search__button')
-let searchBtn860 = document.querySelector('.header__search-btn-860')
-let closeBtn = document.querySelector('.header-search__close-btn')
 let searchInput = document.querySelector('.header-search__input')
 let searchForm = document.querySelector('.header-search')
 let pageWidth = document.documentElement.scrollWidth
 
-function openSearch() {
-
-  searchInput.classList.add('header-search__input--active')
-  searchForm.classList.add('header-form--active')
-  closeBtn.classList.add('close-btn--active')
-
+searchBtn.addEventListener('click', function(){
+  searchInput.classList.toggle('header-search__input--active')
   // console.log(pageWidth)
-  if (pageWidth <= 650) {
-    searchForm.classList.add('mobile--active')
-    searchBtn860.classList.add('hide-btn')
-  }
-  else console.log('ширина экрана больше 630px')
-
-  closeBtn.addEventListener('click', closeSearch)
-
-}
-
-function closeSearch() {
-  searchInput.classList.remove('header-search__input--active')
-  searchForm.classList.remove('header-form--active')
-  closeBtn.classList.remove('close-btn--active')
-  searchForm.classList.remove('mobile--active')
-  searchBtn860.classList.remove('hide-btn')
-}
-
-searchBtn.addEventListener('click', openSearch)
-searchBtn860.addEventListener('click', openSearch)
-
+  if (pageWidth <= 650)
+    searchForm.classList.toggle('mobile--active')
+  else
+    console.log('ширина экрана больше 630px')
+})
 
 // Кнопка бургер
 let burgerBtn = document.querySelector('.burger')
 let burgerMenu = document.querySelector('.burger-nav')
-const burgerItems = document.querySelectorAll('.burger-nav__link')
-
-function burgerItemClick() {
-  document.body.classList.remove('scroll-forbidden')
-  burgerBtn.classList.remove('burger--active')
-  burgerMenu.classList.remove('burger-nav--active')
-
-  for (const item of burgerItems) {
-    item.removeEventListener('click', burgerItemClick)
-  }
-}
 
 burgerBtn.addEventListener('click', function(){
   burgerBtn.classList.toggle('burger--active')
   burgerMenu.classList.toggle('burger-nav--active')
-  document.body.classList.toggle('scroll-forbidden')
-
-  for (const item of burgerItems) {
-    item.addEventListener('click', burgerItemClick)
-  }
-
 })
-
-// аккордион логика с бордерами (чтобы не делать "двойной" бордер)
-const hs = document.querySelectorAll('.accordion__title') // заголовки аккордиона
-
-hs.forEach((h) => {
-  h.addEventListener('mouseover', () => {
-    if(!h.classList.contains('ui-accordion-header-active')) {
-      const next = h.nextElementSibling.nextElementSibling
-      h.classList.add('accordion__title-hover')
-      if (next) {
-        next.classList.add('accordion__title-borderTop')
-      }
-    }
-  })
-
-  h.addEventListener('mouseout', () => {
-    const next = h.nextElementSibling.nextElementSibling
-    h.classList.remove('accordion__title-hover')
-    if (next) {
-      next.classList.remove('accordion__title-borderTop')
-    }
-  })
-})
-
-
-// Плавный скролл
-
-const links = document.querySelectorAll('.scroll-link')
-
-console.log(links)
-
-function scrollTo(el) {
-    window.scroll({
-        left:0,
-        top:el.offsetTop,
-        behavior:'smooth'
-    })
-}
-
-for (const link of links) {
-  link.addEventListener('click', (e) => {
-    e.preventDefault()
-    let href = link.getAttribute('href')
-    let target = document.querySelector(href)
-    scrollTo(target)
-    })
-}
